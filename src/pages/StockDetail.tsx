@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Clock, Network, Globe, TrendingUp, TrendingDown, Users, Activity } from 'lucide-react';
-import { tsmcData } from '../data/stocks/2330';
+// Dynamically import all stock files
+import type { StockDetailData } from '../data/stocks/2330';
+const stockModules = import.meta.glob('../data/stocks/*.ts', { eager: true });
 
 // In a real app, this would fetch from an API based on the symbol.
-// We are using hardcoded data to ensure NO API keys or endpoints are exposed.
-const getStockData = (symbol: string) => {
-  if (symbol === '2330') return tsmcData;
+const getStockData = (symbol: string): StockDetailData | null => {
+  const targetPath = `../data/stocks/${symbol}.ts`;
+  const module = stockModules[targetPath] as any;
+  if (module && module.stockData) return module.stockData as StockDetailData;
+  if (module && module.tsmcData) return module.tsmcData as StockDetailData; // fallback for 2330 if not updated
   return null;
 };
 
