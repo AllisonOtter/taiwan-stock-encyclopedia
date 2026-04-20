@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Cpu, Server, Leaf, Landmark, Ship, TrendingUp, TrendingDown, ArrowRight, Search, Activity } from 'lucide-react';
 import { sectors, type Sector } from '../data/categories';
 import '../index.css'; // Make sure styles are imported
@@ -105,19 +106,21 @@ const Home: React.FC = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#666', fontWeight: 600 }}>代表性指標股</div>
                   {sector.topStocks.map(stock => (
-                    <div key={stock.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.03)' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <span style={{ fontWeight: 600, width: '48px' }}>{stock.symbol}</span>
-                        <span style={{ color: '#ccc' }}>{stock.name}</span>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <span style={{ fontWeight: 500 }}>{stock.price.toFixed(1)}</span>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: stock.change >= 0 ? 'var(--danger-color)' : 'var(--success-color)', fontSize: '0.9rem', width: '60px', justifyContent: 'flex-end' }}>
-                          {stock.change >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
-                          <span>{Math.abs(stock.changePercent)}%</span>
+                    <Link to={`/stock/${stock.symbol}`} key={stock.id} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.03)', transition: 'background 0.2s', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(0,0,0,0.2)'}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          <span style={{ fontWeight: 600, width: '48px', color: '#60a5fa' }}>{stock.symbol}</span>
+                          <span style={{ color: '#ccc' }}>{stock.name}</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                          <span style={{ fontWeight: 500 }}>{stock.price.toFixed(1)}</span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: stock.change >= 0 ? 'var(--danger-color)' : 'var(--success-color)', fontSize: '0.9rem', width: '60px', justifyContent: 'flex-end' }}>
+                            {stock.change >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
+                            <span>{Math.abs(stock.changePercent)}%</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
