@@ -1,6 +1,7 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import StockDetail from './pages/StockDetail';
+import SectorDetail from './pages/SectorDetail';
 import './index.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/stock/:symbol" element={<StockDetail />} />
+          <Route path="/sector/:sectorId" element={<SectorDetail />} />
         </Routes>
       </Router>
     </>

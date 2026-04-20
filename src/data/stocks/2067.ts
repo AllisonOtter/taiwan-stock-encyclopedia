@@ -1,0 +1,47 @@
+export const stockData = {
+  symbol: "2067",
+  name: "嘉鋼",
+  sector: "上櫃 - 類別 05",
+  currentPrice: 7.21,
+  change: 1.83,
+  changePercent: 1.94,
+  marketCap: "市值估算中",
+  history: {
+    founded: "建檔中",
+    description: "嘉鋼 (2067) 是台灣上櫃市場的重要標的之一。本頁面為自動化生成的基礎架構庫，未來可串接即時 API 獲取完整營運軌跡。",
+    milestones: [
+      { year: "成立", event: "公司正式設立並投入營運。" },
+      { year: "掛牌", event: "於台灣市場掛牌交易。" },
+      { year: "近況", event: "持續優化營運體質，面對市場挑戰。" }
+    ]
+  },
+  supplyChain: {
+    upstream: ["上游供應商/原物料"],
+    midstream: ["嘉鋼 - 核心業務與服務"],
+    downstream: ["下游客戶/終端消費市場"],
+    description: "在所屬產業鏈中扮演關鍵角色，持續優化供應鏈管理以提升競爭力。"
+  },
+  geopolitics: {
+    usRelations: "受全球宏觀經濟與國際貿易政策變動之影響。",
+    globalImpact: "根據產業特性，積極拓展國內外市場版圖。",
+    keyUSPartners: ["國際客戶A", "區域合作夥伴B"]
+  },
+  operations: {
+    revenue: "依最新財報",
+    yoyGrowth: "--%",
+    grossMargin: "--%",
+    highlights: [
+      "維持穩健的營運體質。",
+      "持續投入研發或提升服務品質。",
+      "因應市場波動展現韌性。"
+    ]
+  },
+  leadership: {
+    chairman: "現任董事長",
+    ceo: "現任總經理/執行長",
+    news: [
+      "管理層持續推動企業永續發展(ESG)。",
+      "對未來產業景氣抱持相應之營運策略。"
+    ]
+  }
+};

@@ -3,13 +3,49 @@ import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Clock, Network, Globe, TrendingUp, TrendingDown, Users, Activity } from 'lucide-react';
 // Dynamically import all stock files
-import type { StockDetailData } from '../data/stocks/2330';
-const stockModules = import.meta.glob('../data/stocks/*.ts', { eager: true });
+export interface StockDetailData {
+  symbol: string;
+  name: string;
+  sector: string;
+  currentPrice: number;
+  change: number;
+  changePercent: number;
+  marketCap: string;
+  history: {
+    founded: string;
+    description: string;
+    milestones: { year: string; event: string }[];
+  };
+  supplyChain: {
+    upstream: string[];
+    midstream: string[];
+    downstream: string[];
+    description: string;
+  };
+  geopolitics: {
+    usRelations: string;
+    globalImpact: string;
+    keyUSPartners: string[];
+  };
+  operations: {
+    revenue: string;
+    yoyGrowth: string;
+    grossMargin: string;
+    highlights: string[];
+  };
+  leadership: {
+    chairman: string;
+    ceo: string;
+    news: string[];
+  };
+}
+const stockModules = import.meta.glob('../data/stocks/*.ts');
 
-// In a real app, this would fetch from an API based on the symbol.
-const getStockData = (symbol: string): StockDetailData | null => {
+const fetchStockData = async (symbol: string): Promise<StockDetailData | null> => {
   const targetPath = `../data/stocks/${symbol}.ts`;
-  const module = stockModules[targetPath] as any;
+  const importFn = stockModules[targetPath];
+  if (!importFn) return null;
+  const module = await importFn() as any;
   if (module && module.stockData) return module.stockData as StockDetailData;
   if (module && module.tsmcData) return module.tsmcData as StockDetailData; // fallback for 2330 if not updated
   return null;
@@ -25,8 +61,61 @@ const tabs = [
 
 const StockDetail: React.FC = () => {
   const { symbol } = useParams<{ symbol: string }>();
-  const data = getStockData(symbol || '2330');
+  const [data, setData] = useState<StockDetailData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('history');
+
+  React.useEffect(() => {
+    let intervalId: any;
+    
+    const loadData = async () => {
+      setLoading(true);
+      const stock = await fetchStockData(symbol || '2330');
+      setData(stock);
+      setLoading(false);
+
+      // Start fetching live data
+      const fetchLiveData = async () => {
+        if (!symbol) return;
+        try {
+          const res = await fetch(`http://localhost:8000/api/quotes?symbols=${symbol}`);
+          const liveData = await res.json();
+          if (liveData[symbol]) {
+            setData(prev => {
+              if (!prev) return prev;
+              return {
+                ...prev,
+                currentPrice: liveData[symbol].currentPrice,
+                change: liveData[symbol].change,
+                changePercent: liveData[symbol].changePercent
+              };
+            });
+          }
+        } catch (e) {
+          // Silent catch for API failure (e.g. server not running)
+        }
+      };
+
+      // Fetch immediately once
+      fetchLiveData();
+      
+      // Setup interval every 5 seconds
+      intervalId = setInterval(fetchLiveData, 5000);
+    };
+    loadData();
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [symbol]);
+
+  if (loading) {
+    return (
+      <div className="container" style={{ paddingTop: '5rem', textAlign: 'center' }}>
+        <h2>載入中...</h2>
+      </div>
+    );
+  }
 
   if (!data) {
     return (

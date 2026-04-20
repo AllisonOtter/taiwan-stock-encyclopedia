@@ -37,6 +37,36 @@ const itemVariants = {
 
 const HomePage: React.FC = () => {
   const [activeMacro, setActiveMacro] = useState<string>('全部');
+  const [livePrices, setLivePrices] = useState<Record<string, { price: number, change: number, changePercent: number }>>({});
+
+  React.useEffect(() => {
+    let intervalId: any;
+    
+    const fetchLiveData = async () => {
+      const allSymbols = sectors.flatMap(s => s.topStocks.map(st => st.symbol)).join(',');
+      if (!allSymbols) return;
+      try {
+        const res = await fetch(`http://localhost:8000/api/quotes?symbols=${allSymbols}`);
+        const data = await res.json();
+        const newPrices: Record<string, any> = {};
+        for (const sym in data) {
+          newPrices[sym] = {
+            price: data[sym].currentPrice,
+            change: data[sym].change,
+            changePercent: data[sym].changePercent
+          };
+        }
+        setLivePrices(prev => ({ ...prev, ...newPrices }));
+      } catch (e) {
+        // Silent catch for API failure
+      }
+    };
+
+    fetchLiveData();
+    intervalId = setInterval(fetchLiveData, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const filteredSectors = activeMacro === '全部' 
     ? sectors 
@@ -140,7 +170,12 @@ const HomePage: React.FC = () => {
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     <div style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#666', fontWeight: 600 }}>代表性指標股</div>
-                    {sector.topStocks.map(stock => (
+                    {sector.topStocks.map(stock => {
+                      const live = livePrices[stock.symbol];
+                      const displayPrice = live ? live.price : stock.price;
+                      const displayChange = live ? live.change : stock.change;
+                      const displayChangePercent = live ? live.changePercent : stock.changePercent;
+                      return (
                       <Link to={`/stock/${stock.symbol}`} key={stock.id} style={{ textDecoration: 'none', color: 'inherit' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.03)', transition: 'background 0.2s', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(0,0,0,0.2)'}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -148,15 +183,16 @@ const HomePage: React.FC = () => {
                             <span style={{ color: '#ccc' }}>{stock.name}</span>
                           </div>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                            <span style={{ fontWeight: 500 }}>{stock.price.toFixed(1)}</span>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: stock.change >= 0 ? 'var(--danger-color)' : 'var(--success-color)', fontSize: '0.9rem', width: '60px', justifyContent: 'flex-end' }}>
-                              {stock.change >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
-                              <span>{Math.abs(stock.changePercent)}%</span>
+                            <span style={{ fontWeight: 500 }}>{displayPrice.toFixed(1)}</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: displayChange >= 0 ? 'var(--danger-color)' : 'var(--success-color)', fontSize: '0.9rem', width: '60px', justifyContent: 'flex-end' }}>
+                              {displayChange >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
+                              <span>{Math.abs(displayChangePercent)}%</span>
                             </div>
                           </div>
                         </div>
                       </Link>
-                    ))}
+                      );
+                    })}
                     {sector.topStocks.length === 0 && (
                       <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontStyle: 'italic', padding: '0.5rem 0' }}>資料準備中...</div>
                     )}
@@ -164,13 +200,13 @@ const HomePage: React.FC = () => {
                 </div>
 
                 <div style={{ marginTop: '2rem', position: 'relative', zIndex: 1 }}>
-                  <button style={{ width: '100%', padding: '0.875rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', fontWeight: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', transition: 'all 0.2s ease' }} 
+                  <Link to={`/sector/${sector.id}`} style={{ width: '100%', padding: '0.875rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', textDecoration: 'none', borderRadius: '8px', color: 'white', fontWeight: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', transition: 'all 0.2s ease' }} 
                     onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)' }}
                     onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)' }}
                   >
                     探索產業深度解析
                     <ArrowRight size={16} />
-                  </button>
+                  </Link>
                 </div>
               </motion.div>
             );

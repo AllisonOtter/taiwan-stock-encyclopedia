@@ -1,48 +1,47 @@
 export const stockData = {
   symbol: "2727",
   name: "王品",
-  sector: "依分類歸屬",
-  currentPrice: 245,
-  change: 2,
-  changePercent: 0.82,
-  marketCap: "NT$ -- 兆",
+  sector: "上市 - 類別 16",
+  currentPrice: 226,
+  change: 0.70,
+  changePercent: 2.23,
+  marketCap: "市值估算中",
   history: {
-    founded: "未知",
-    description: "王品 是台灣市場的重要企業之一。本欄位目前為自動生成的初版資料，後續將匯入更詳細的歷史沿革與發展軌跡。",
+    founded: "建檔中",
+    description: "王品 (2727) 是台灣上市市場的重要標的之一。本頁面為自動化生成的基礎架構庫，未來可串接即時 API 獲取完整營運軌跡。",
     milestones: [
-      { year: "創立", event: "公司正式成立並投入所屬產業營運。" },
-      { year: "上市", event: "在台灣證券交易所掛牌上市，邁入資本市場。" },
-      { year: "近年", event: "持續擴大產能與業務規模，於市場中保持競爭力。" }
+      { year: "成立", event: "公司正式設立並投入營運。" },
+      { year: "掛牌", event: "於台灣市場掛牌交易。" },
+      { year: "近況", event: "持續優化營運體質，面對市場挑戰。" }
     ]
   },
   supplyChain: {
-    upstream: ["上游原物料或關鍵零組件供應商"],
-    midstream: ["王品 本身核心業務"],
-    downstream: ["下游客戶或終端消費市場"],
-    description: "在產業鏈中扮演承上啟下的關鍵角色。持續優化供應鏈管理，降低成本並提升產品附加價值。"
+    upstream: ["上游供應商/原物料"],
+    midstream: ["王品 - 核心業務與服務"],
+    downstream: ["下游客戶/終端消費市場"],
+    description: "在所屬產業鏈中扮演關鍵角色，持續優化供應鏈管理以提升競爭力。"
   },
   geopolitics: {
-    usRelations: "與全球供應鏈及宏觀經濟息息相關，受中美貿易摩擦與全球貨幣政策波動的間接或直接影響。",
-    globalImpact: "身為台灣重要企業，積極拓展海外版圖，以分散單一市場風險。",
-    keyUSPartners: ["國際合作夥伴 A", "國際客戶 B"]
+    usRelations: "受全球宏觀經濟與國際貿易政策變動之影響。",
+    globalImpact: "根據產業特性，積極拓展國內外市場版圖。",
+    keyUSPartners: ["國際客戶A", "區域合作夥伴B"]
   },
   operations: {
-    revenue: "依最新財報公告",
+    revenue: "依最新財報",
     yoyGrowth: "--%",
     grossMargin: "--%",
     highlights: [
-      "維持穩健的營運體質與現金流。",
-      "積極投入研發與數位轉型，提升長期競爭力。",
-      "在市場波動中展現經營韌性。"
+      "維持穩健的營運體質。",
+      "持續投入研發或提升服務品質。",
+      "因應市場波動展現韌性。"
     ]
   },
   leadership: {
     chairman: "現任董事長",
     ceo: "現任總經理/執行長",
     news: [
-      "管理層持續推動 ESG 永續發展目標。",
-      "對未來幾年的產業景氣抱持審慎樂觀的態度。",
-      "透過策略聯盟與併購，尋求新的成長引擎。"
+      "管理層持續推動企業永續發展(ESG)。",
+      "對未來產業景氣抱持相應之營運策略。"
     ]
   }
 };

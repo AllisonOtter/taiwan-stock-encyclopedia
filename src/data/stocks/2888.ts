@@ -1,0 +1,56 @@
+export const stockData = {
+  "symbol": "2888",
+  "name": "新光金",
+  "sector": "finance",
+  "currentPrice": 12.5,
+  "change": 0.5,
+  "changePercent": 4.17,
+  "history": {
+    "founded": "2002年",
+    "description": "台灣老牌大型金控，以新光人壽為核心，近年歷經經營權變天與資本適足率危機，目前正與台新金進行合併。",
+    "milestones": [
+      {
+        "year": "2002",
+        "event": "成立"
+      }
+    ]
+  },
+  "supplyChain": {
+    "upstream": [
+      "保費收入",
+      "存款"
+    ],
+    "midstream": [
+      "新光人壽",
+      "新光銀行",
+      "元富證券"
+    ],
+    "downstream": [
+      "廣大保戶",
+      "企金客戶"
+    ],
+    "description": "擁有極其龐大的房地產與資產部位。"
+  },
+  "geopolitics": {
+    "usRelations": "無",
+    "globalImpact": "受美國降息預期影響，壽險端投資組合評價變動大。",
+    "keyUSPartners": [
+      "無"
+    ]
+  },
+  "operations": {
+    "revenue": "NT$ 720 億 (淨收益)",
+    "yoyGrowth": "轉虧為盈",
+    "grossMargin": "N/A",
+    "highlights": [
+      "積極增資改善新光人壽體質，獲利重回正軌"
+    ]
+  },
+  "leadership": {
+    "chairman": "魏寶生",
+    "ceo": "陳恩光",
+    "news": [
+      "股東會通過與台新金合併案，等待主管機關核准。"
+    ]
+  }
+};
